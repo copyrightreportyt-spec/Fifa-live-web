@@ -12,7 +12,7 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIFA FHD by TahMiDx</title>
+    <title>⚽ LIVE TV | Premium 3D Streaming</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,131 +21,337 @@
     <link rel="dns-prefetch" href="https://vjs.zencdn.net">
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Hind+Siliguri:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css" type="text/css"/>
     
     <style>
-        body,html{margin:0;padding:0;width:100%;height:100%;background-color:#050505;overflow:hidden;font-family:'Hind Siliguri','Inter',sans-serif;color:#fff}
-        #vjs-wrapper, #fluid-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        #fluid-wrapper { display: none; background: #000; z-index: 1; }
-        #vjs-wrapper { z-index: 2; }
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins', 'Hind Siliguri', sans-serif;
+        }
+
+        body{
+            background: radial-gradient(circle at 50% 50%, #0d1b2a 0%, #010814 80%);
+            overflow: hidden;
+            color: #fff;
+            width: 100%;
+            height: 100vh;
+            perspective: 1000px;
+        }
+        
+        /* 3D STICKY MARQUEE NOTICE */
+        .sticky-notice {
+            position: fixed; top: 0; left: 0; width: 100%; 
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            color: #fff; padding: 12px 40px 12px 15px; font-size: 14px; font-weight: 600;
+            z-index: 1000000; box-sizing: border-box; display: flex; align-items: center; 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255,255,255,0.2); 
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease; overflow: hidden; letter-spacing: 0.3px;
+        }
+        .marquee-wrapper { flex: 1; overflow: hidden; white-space: nowrap; position: relative; }
+        .marquee-text { display: inline-block; padding-left: 100%; animation: marquee-scroll 18s linear infinite; text-shadow: 0 2px 8px rgba(0,198,255,0.6); }
+        @keyframes marquee-scroll { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+        
+        .sticky-notice .close-btn { position: absolute; right: 15px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 16px; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; padding: 0; z-index: 2; box-shadow: inset 0 1px 3px rgba(255,255,255,0.3); }
+        .sticky-notice .close-btn:hover { background: linear-gradient(135deg, #ff2a2a, #b30000); transform: scale(1.1); box-shadow: 0 0 10px #ff2a2a; }
+
+        /* 3D HEADER AREA */
+        header{
+            position: fixed; top: 48px; left: 0; width: 100%; padding: 15px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+            backdrop-filter: blur(25px); background: rgba(255,255,255,.03);
+            border-bottom: 1px solid rgba(255,255,255,.05); z-index: 999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: top 0.3s ease;
+        }
+        body:not(.has-notice) header { top: 0; }
+        
+        .logo{ font-size: 26px; font-weight: 800; color: #FFD700; text-shadow: 0 0 20px rgba(255,215,0,0.6), 0 2px 4px #000; letter-spacing: 1px; }
+
+        /* 3D VIDEO CONTAINER */
+        .player-container {
+            position: absolute; top: 150px; left: 50%; transform: translateX(-50%);
+            width: 92%; height: 58vh; background: #000; border-radius: 24px;
+            overflow: hidden; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(0, 196, 255, 0.25), inset 0 0 20px rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            z-index: 5;
+            transition: all 0.3s ease;
+        }
+        body:not(.has-notice) .player-container { top: 95px; height: 63vh; }
+
+        #vjs-wrapper, #fluid-wrapper { width: 100%; height: 100%; }
+        #fluid-wrapper { display: none; background: #000; }
         .fluid_video_wrapper { width: 100% !important; height: 100% !important; }
         .video-js{width:100%!important;height:100%!important;background-color:transparent}
         
-        /* PREMIUM GLASS UI NOTIFICATION BAR */
-        .sticky-notice { position: fixed; top: 0; left: 0; width: 100%; background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); color: #fff; padding: 12px 40px 12px 15px; font-size: 14px; font-weight: 600; z-index: 1000000; box-sizing: border-box; display: flex; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.15); font-family: 'Hind Siliguri', sans-serif; transition: all 0.3s ease; overflow: hidden; letter-spacing: 0.3px; }
-        .marquee-wrapper { flex: 1; overflow: hidden; white-space: nowrap; position: relative; }
-        .marquee-text { display: inline-block; padding-left: 100%; animation: marquee-scroll 18s linear infinite; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        @keyframes marquee-scroll { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
-        .sticky-notice .close-btn { position: absolute; right: 15px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-size: 16px; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; padding: 0; z-index: 2; }
-        .sticky-notice .close-btn:hover { background: rgba(255,42,42,0.8); border-color: #ff2a2a; }
-        
-        /* Video.js & Fluid Player Styling */
-        .video-js .vjs-control-bar, .fluid_controls_container { background: rgba(255, 255, 255, 0.08) !important; backdrop-filter: blur(25px) saturate(200%); -webkit-backdrop-filter: blur(25px) saturate(200%); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 40px !important; bottom: 30px !important; left: 50% !important; transform: translateX(-50%) !important; width: calc(100% - 60px) !important; max-width: 850px !important; height: 56px !important; display: flex !important; align-items: center !important; padding: 0 15px !important; box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15); transition: opacity .4s ease, transform .4s ease; }
+        /* 3D GLASS UI VIDEO CONTROLS */
+        .video-js .vjs-control-bar, .fluid_controls_container {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)) !important;
+            backdrop-filter: blur(25px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.25) !important; 
+            border-radius: 40px !important; bottom: 20px !important; left: 50% !important; 
+            transform: translateX(-50%) !important; width: calc(100% - 40px) !important; 
+            max-width: 850px !important; height: 54px !important; display: flex !important; 
+            align-items: center !important; padding: 0 15px !important; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255, 255, 255, 0.3) !important; 
+            transition: all .4s ease;
+        }
         .fluid_controls_container { padding: 0 10px; display: block !important; }
-        .video-js .vjs-button { width: 40px !important; height: 40px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 50% !important; margin: 0 3px !important; transition: all .2s ease; background: 0 0 !important; }
-        .video-js .vjs-button:hover { background: rgba(255, 255, 255, 0.15) !important; }
-        .video-js .vjs-icon-placeholder:before { font-size: 1.5em !important; line-height: 1 !important; display: flex; align-items: center; justify-content: center; }
-        .video-js .vjs-volume-panel { display: flex !important; align-items: center !important; width: auto !important; }
-        .video-js .vjs-volume-panel .vjs-volume-control { display: flex !important; align-items: center !important; height: 100% !important; }
-        .video-js .vjs-volume-level { background-color: #fff !important; }
-        .video-js .vjs-picture-in-picture-control { display: flex !important; }
-        .video-js .vjs-subs-caps-button { display: flex !important; }
-        .video-js .vjs-live-control, .video-js .vjs-live-display { display: none !important; }
-        .vjs-current-time, .vjs-duration, .vjs-remaining-time, .vjs-time-divider { display: none !important; }
-        .video-js .vjs-progress-control { display: flex !important; flex: auto; align-items: center; margin: 0 10px; }
-        .video-js .vjs-progress-holder { height: 6px; border-radius: 4px; background: rgba(255,255,255,0.2); }
-        .video-js .vjs-play-progress { background-color: rgba(255,255,255,0.9); border-radius: 4px; }
-        .video-js.vjs-has-started.vjs-user-inactive.vjs-playing .vjs-control-bar { opacity: 0 !important; visibility: hidden !important; transform: translateX(-50%) translateY(10px) !important; transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease !important; pointer-events: none !important; }
-        .fluid_controls_container { transition: opacity 0.4s ease, visibility 0.4s ease !important; }
+        .video-js .vjs-button { width: 40px !important; height: 40px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 50% !important; margin: 0 4px !important; transition: all .2s ease; background: 0 0 !important; }
+        .video-js .vjs-button:hover { background: rgba(255, 255, 255, 0.2) !important; transform: scale(1.1); text-shadow: 0 0 8px #fff; }
+        .video-js .vjs-progress-holder { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.15); }
+        .video-js .vjs-play-progress { background: linear-gradient(90deg, #00c6ff, #0072ff) !important; border-radius: 4px; }
+        .video-js .vjs-live-control, .video-js .vjs-live-display, .vjs-current-time, .vjs-duration, .vjs-remaining-time, .vjs-time-divider { display: none !important; }
+
+        /* NEON LIVE INDICATOR OVERLAYS */
+        .global-live-indicator-box { display: flex; align-items: center; gap: 8px; background: rgba(0, 0, 0, 0.4); padding: 6px 14px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(15px); box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1); }
+        .global-live-badge { background: linear-gradient(135deg, #ff0055, #b3002d); border-radius: 20px; padding: 2px 14px; font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; animation: pulse 1.5s infinite; box-shadow: 0 0 15px #ff0055; }
         
-        /* Global UI Elements */
-        .global-live-indicator-box { position: absolute; left: 50%; transform: translateX(-50%); z-index: 99999; display: flex; align-items: center; gap: 8px; pointer-events: none; background: rgba(255, 255, 255, 0.1); padding: 5px 10px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(15px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); top: 25px; transition: top 0.3s ease; }
-        
-        body.has-notice .global-live-indicator-box { top: 60px; }
-        
-        .server-box { position: absolute; left: 50%; z-index: 9999; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 8px 12px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 10px 30px rgba(0,0,0,.3); bottom: 95px; top: auto !important; transform: translateX(-50%); transition: all 0.4s ease; opacity: 1; visibility: visible; }
+        @keyframes pulse{
+            0%{box-shadow:0 0 0 0 rgba(255,0,85,.7);}
+            70%{box-shadow:0 0 0 12px rgba(255,0,85,0);}
+            100%{box-shadow:0 0 0 0 rgba(255,0,85,0);}
+        }
+
+        .vjs-view-counter { display:flex; align-items:center; color:#fff; font-size:12px; font-weight:600; background:rgba(255, 255, 255, 0.08); padding:0 12px; height:26px; border-radius:20px; border: 1px solid rgba(255,255,255,0.05); }
+        .vjs-view-counter svg { margin-right:6px; color: #00ffcc; filter: drop-shadow(0 0 4px #00ffcc); }
+
+        /* FLOATING SIDE WIDGETS */
+        .social-box { position:absolute; left:30px; bottom:30px; z-index:9999; display:flex; gap:12px; background: rgba(10, 25, 47, 0.6); backdrop-filter: blur(20px); padding: 12px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 20px 40px rgba(0,0,0,.6), inset 0 1px 2px rgba(255,255,255,0.2); }
+        .social-btn { display:flex; align-items:center; padding:10px 20px; border-radius:30px; font-size:13px; font-weight:700; color:#fff; text-decoration:none; transition:.3s; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+        .btn-fb { background: linear-gradient(135deg, #1877F2, #0a53be); box-shadow: 0 4px 15px rgba(24,119,242,0.4); } .btn-fb:hover{ transform: translateY(-2px); box-shadow: 0 6px 20px #1877F2; }
+        .btn-tg { background: linear-gradient(135deg, #229ED9, #177aa9); box-shadow: 0 4px 15px rgba(34,158,217,0.4); } .btn-tg:hover{ transform: translateY(-2px); box-shadow: 0 6px 20px #229ED9; }
+        .close-social { background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; padding: 0 6px; opacity: 0.6; transition: 0.2s; }
+        .close-social:hover { opacity: 1; transform: scale(1.1); }
+
+        /* 3D VIP PREMIUM BUTTON */
+        .vip-trigger-box { position:fixed; right:30px; bottom:30px; z-index:9999; }
+        .btn-vip-float { background: linear-gradient(135deg, #FFE000 0%, #799F0C 100%); color:#000; border:none; padding:14px 28px; border-radius:50px; font-weight:800; font-size:14px; display:flex; align-items:center; gap:8px; cursor:pointer; box-shadow: 0 10px 25px rgba(212,175,55,0.5), inset 0 2px 3px rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .btn-vip-float:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 15px 30px rgba(212,175,55,0.8); }
+
+        /* 3D SERVER BOX & NEON BUTTONS */
+        .server-box {
+            position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(25px); padding: 12px 24px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 45px rgba(0,0,0,.6), inset 0 1px 2px rgba(255,255,255,0.1); transition: all 0.4s ease;
+            max-width: 90%;
+        }
         :fullscreen .server-box, :-webkit-full-screen .server-box { display: none !important; }
+
+        .server-btn{ 
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)); 
+            color:#fff; padding:12px 26px; border-radius:30px; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            border: 1px solid rgba(255,255,255,0.1); position:relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.2);
+        }
+        .server-btn:hover{ 
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            transform:translateY(-4px); 
+            box-shadow: 0 10px 20px rgba(0,198,255,0.5), inset 0 1px 2px rgba(255,255,255,0.4);
+            border-color: rgba(255,255,255,0.3);
+        }
+        .server-btn.active{ 
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            color:#000; font-weight:700;
+            box-shadow: 0 10px 25px rgba(0,242,254,0.6), inset 0 1px 2px rgba(255,255,255,0.5); 
+            border-color: #00f2fe;
+            transform: scale(1.02);
+        }
+                
+        .badge-4k::after { content: 'AUTO'; position: absolute; top: -6px; right: -2px; background: #FFD700; color: #000; font-size: 8px; font-weight: 900; padding: 1px 5px; border-radius: 6px; box-shadow: 0 2px 5px rgba(255,215,0,0.4); }
+        .badge-hd::after { content: 'LIVE'; position: absolute; top: -6px; right: -2px; background: #00FFCC; color: #000; font-size: 8px; font-weight: 900; padding: 1px 5px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,255,204,0.4); }
+
+        /* 3D PREMIUM MODALS & LOCKERS */
+        #vip-modal, #content-locker { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(1, 5, 15, 0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:100000;display:none;align-items:center;justify-content:center; }
+        .vip-box, .locker-box { background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9)); backdrop-filter: blur(35px); border: 1px solid rgba(255, 255, 255, 0.15); padding: 45px 35px; border-radius: 28px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.9), 0 0 40px rgba(0, 198, 255, 0.15); max-width: 440px; width: 90%; position: relative; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .vip-box { border-color: rgba(255, 215, 0, 0.3); box-shadow: 0 30px 70px rgba(0,0,0,0.9), 0 0 40px rgba(255, 215, 0, 0.15); }
+        @keyframes popIn { 0%{transform:scale(.8) translateY(20px);opacity:0} 100%{transform:scale(1) translateY(0);opacity:1} }
         
-        .global-live-badge { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); border-radius: 20px; padding: 0 14px; height: 32px; display: flex; align-items: center; font-size: 12px; font-weight: 700; letter-spacing: .5px; color: #fff; text-transform: uppercase; }
-        .global-live-badge::before { content: ''; display: inline-block; width: 8px; height: 8px; background-color: #ff2a2a; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 8px rgba(255, 42, 42, 0.8); animation: pulse-dot 1.5s infinite; }
-        .vjs-view-counter { display:flex!important;align-items:center!important;color:#fff!important;font-size:13px!important; font-weight:600!important;background:rgba(255, 255, 255, 0.1); padding:0 12px!important;height:32px!important; border-radius:20px!important;border:1px solid rgba(255, 255, 255, 0.2)!important; }
-        .vjs-view-counter svg { margin-right:6px; color: #4CAF50; }
-        @keyframes pulse-dot{0%{transform:scale(.95);box-shadow:0 0 0 0 rgba(255,42,42,.7)}70%{transform:scale(1);box-shadow:0 0 0 6px rgba(255,42,42,0)}100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(255,42,42,0)}}
+        .close-vip { position:absolute; right:20px; top:20px; background:0 0; border:none; color:#aaa; font-size:26px; cursor:pointer; transition: 0.2s; }
+        .close-vip:hover { color: #fff; transform: scale(1.1); }
+        .vip-box h2 { color:#FFD700; margin:0 0 15px; font-size:26px; font-weight:800; text-shadow: 0 0 15px rgba(255,215,0,0.4); }
+        .vip-box p, .locker-box p { color:#cbd5e1; font-size:14px; margin-bottom:24px; line-height:1.6;}
         
-        .server-btn{background:0 0;color:#ccc;padding:8px 16px;border-radius:30px;font-size:13px;font-weight:600;cursor:pointer;transition:all .3s;border:none;position:relative;}
-        .server-btn:hover{background:rgba(255,255,255,.1);color:#fff}
-        .server-btn.active{background:rgba(255,255,255,0.2);color:#fff;box-shadow:0 4px 15px rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.4); font-weight:700}
+        .btn-donate { display:inline-block; background: linear-gradient(135deg, #00c6ff, #0072ff); color:#fff; padding:14px 25px; border-radius:14px; text-decoration:none; font-weight:700; font-size:15px; margin-bottom:24px; transition:0.3s; width:100%; box-sizing:border-box; box-shadow: 0 5px 15px rgba(0,114,255,0.3), inset 0 1px 1px rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.1); }
+        .btn-donate:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,114,255,0.5); }
         
-        .badge-hd::after { content: 'HD'; position: absolute; top: -6px; right: -4px; background: #00d2ff; color: #000; font-size: 9px; font-weight: 800; padding: 2px 5px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-        .badge-4k::after { content: '4K'; position: absolute; top: -6px; right: -4px; background: #FFD700; color: #000; font-size: 9px; font-weight: 800; padding: 2px 5px; border-radius: 8px; box-shadow: 0 2px 5px rgba(255,215,0,0.5); }
-        
-        /* Mobile Responsive Fix */
+        .pin-section { background:rgba(0,0,0,0.4); padding:20px; border-radius:20px; border:1px solid rgba(255,255,255,0.08); box-shadow: inset 0 2px 8px rgba(0,0,0,0.5); }
+        .pin-input { width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:14px; border-radius:12px; font-size:18px; text-align:center; font-family:monospace; font-weight:bold; box-sizing:border-box; margin-bottom:14px; text-transform:uppercase; transition: 0.3s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); }
+        .pin-input:focus { outline:none; border-color:#FFD700; box-shadow: 0 0 15px rgba(255,215,0,0.3); background: rgba(255,255,255,0.08); }
+        .btn-submit-pin, .locker-fb-btn { background: linear-gradient(135deg, #FFE000, #799F0C); color:#000; border:none; width:100%; padding:14px; border-radius:12px; font-weight:800; font-size:16px; cursor:pointer; box-shadow: 0 5px 15px rgba(212,175,55,0.3); transition: 0.2s; }
+        .btn-submit-pin:hover, .locker-fb-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(212,175,55,0.5); }
+
+        /* HIGH DEF LOCKER BUTTON SPECIFIC */
+        .locker-fb-btn { background: linear-gradient(135deg, #1877F2, #0056b3); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); }
+
+        /* NOTICE BOTTOM BAR */
+        .notice-bottom { position:fixed; bottom:0; left:0; width:100%; padding:12px; background:rgba(1, 5, 15, 0.8); backdrop-filter:blur(15px); text-align:center; font-size:13px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.05); z-index: 1; letter-spacing: .5px; }
+
+        /* MOBILE RESPONSIVE ADAPTATIONS */
         @media (max-width:768px){
-            .sticky-notice { font-size: 13px; padding: 10px 40px 10px 10px; }
-            .global-live-indicator-box { left: 50%; top: 15px; transform: translateX(-50%); padding: 4px 8px; }
-            body.has-notice .global-live-indicator-box { top: 50px; }
-            .video-js .vjs-control-bar, .fluid_controls_container {width:96%!important;bottom:15px!important;height:48px!important;padding:0 5px!important}
-            .video-js .vjs-button{width:30px!important;height:30px!important;margin:0 2px!important}
-            .server-box { bottom: 75px !important; width: calc(100% - 40px); box-sizing: border-box; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .sticky-notice { font-size: 12px; padding: 10px 35px 10px 10px; }
+            header { top: 40px; padding: 12px 15px; }
+            .logo { font-size: 21px; }
+            .player-container { top: 115px; height: 35vh; width: 95%; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.7); }
+            body:not(.has-notice) header { top: 0; }
+            body:not(.has-notice) .player-container { top: 72px; height: 38vh; }
+            
+            .video-js .vjs-control-bar, .fluid_controls_container { width:96%!important; bottom:10px!important; height:48px!important; padding:0 5px!important }
+            .video-js .vjs-button{ width:32px!important; height:32px!important; margin:0 2px!important }
+            
+            .server-box { 
+                bottom: 80px !important; width: calc(100% - 24px); padding: 10px; gap: 10px;
+                flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; -webkit-overflow-scrolling: touch; 
+                border-radius: 25px;
+            }
             .server-box::-webkit-scrollbar { display: none; }
-            .server-btn { white-space: nowrap; margin-top: 5px; }
+            .server-btn { white-space: nowrap; padding: 10px 20px; font-size: 13px; border-radius: 20px; }
+            
+            .social-box { display: none !important; } 
+            .vip-trigger-box { bottom: 155px; right: 15px; transform: scale(0.85); }
+            .notice-bottom { font-size: 11px; padding: 8px; }
         }
     </style>
 </head>
 <body class="has-notice">
 
-<!-- TOP NOTIFICATION -->
+<!-- TOP MARQUEE NOTICE -->
 <div id="sticky-header-notice" class="sticky-notice">
     <div class="marquee-wrapper">
-        <span class="marquee-text">📢 ম্যাচ শুরুর পূর্বে সব সার্ভার লাইভ হয়ে যায়! কোনো বাফারিং ছাড়াই খেলা উপভোগ করুন।</span>
+        <span class="marquee-text">📢 ম্যাচ শুরুর পূর্বে সব সার্ভার লাইভ হয়ে যায়! কোনো বাফারিং ইস্যু হলে অন্য সার্ভার ট্রাই করুন।</span>
     </div>
     <button class="close-btn" onclick="dismissNotice()">&times;</button>
 </div>
 
-<!-- LIVE BADGE & VIEWS -->
-<div class="global-live-indicator-box">
-    <div class="global-live-badge">Live</div>
-    <div class="vjs-view-counter">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-        <span id="liveViewerCount">0</span>
+<!-- PREMIUM 3D HEADER -->
+<header>
+    <div class="logo">🏆 LIVE TV</div>
+    <div class="global-live-indicator-box" id="liveIndicator">
+        <div class="global-live-badge">Live</div>
+        <div class="vjs-view-counter" title="Watching Now">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            <span id="liveViewerCount">0</span>
+        </div>
+    </div>
+</header>
+
+<!-- MULTI-PLAYER VIDEO CONTAINER WITH 3D SHADOW -->
+<div class="player-container">
+    <div id="vjs-wrapper" style="display: none;">
+        <video id="live-player" class="video-js vjs-default-skin vjs-big-play-centered" controls autoplay muted playsinline preload="metadata"></video>
+    </div>
+
+    <div id="fluid-wrapper" style="display: block;">
+        <video id="fluid-player" controls autoplay muted playsinline></video>
     </div>
 </div>
 
-<!-- MULTI-PLAYER VIDEOS -->
-<div id="vjs-wrapper">
-    <video id="live-player" class="video-js vjs-default-skin vjs-big-play-centered" controls autoplay muted playsinline preload="metadata"></video>
-</div>
-<div id="fluid-wrapper">
-    <video id="fluid-player" controls autoplay muted playsinline></video>
-</div>
-
-<!-- SERVERS BOX -->
+<!-- 3D NEON SERVER SELECTOR BUTTONS -->
 <div class="server-box">
-    <button id="btn-0" class="server-btn badge-hd active" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten2_HD/output/manifest.m3u8', 0, 'HD')">Server 1</button>
+    <button id="btn-0" class="server-btn badge-4k active" onclick="changeServer('https://trophystream.com/cors-proxy/https/deviantart.lovetier.bz/TSN4/tracks-v1a1/mono.m3u8?token=VFNONHxub19jaGVja19pcHwxNzgzNzE1ODEy.646b4a3ae5fac259db43ea7c6c0f3a55f4d164b46ac8c677ce0a8d11091e2284', 0, '4K')">Server 1</button>
     <button id="btn-1" class="server-btn badge-4k" onclick="changeServer('https://trophystream.com/cors-proxy/https/1nyaler.streamhostingcdn.top/stream/23/index.m3u8', 1, '4K')">Server 2</button>
-    <button id="btn-2" class="server-btn badge-hd" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten3_HD/output/manifest.m3u8', 2, 'HD')">Server 3</button>
-    <button id="btn-3" class="server-btn badge-hd" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten2_HD/output/manifest.m3u8', 3, 'HD')">Toffee Ten 2</button>
-    <button id="btn-4" class="server-btn badge-hd" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten3_HD/output/manifest.m3u8', 4, 'HD')">Toffee Ten 3</button>
+    <button id="btn-2" class="server-btn badge-4k" onclick="changeServer('https://trophystream.com/cors-proxy/https/deviantart.lovetier.bz/TSN3/tracks-v1a1/mono.m3u8?token=VFNOM3xub19jaGVja19pcHwxNzgzNz电MDg1.e5f5a645393430768b21cc37aa47509f741901f08da36d1d4df0a93bd9c12394', 2, '4K')">Server 3</button>
+    <button id="btn-3" class="server-btn badge-hd" onclick="changeServer('https://edge4.bioscopelive.com/hls/somoytv/index.m3u8', 3, 'HD')">Somoy TV</button>
+    <button id="btn-4" class="server-btn badge-hd" onclick="changeServer('https://edge4.bioscopelive.com/hls/jamunatv/index.m3u8', 4, 'HD')">Jamuna TV</button>
     <button id="btn-5" class="server-btn badge-hd" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/1717/output/index.m3u8', 5, 'HD')">T Sports</button>
-    <button id="btn-6" class="server-btn badge-hd" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/Gazi_TV_HD/output/manifest.m3u8', 6, 'HD')">GTV Live</button>
+    <button id="btn-6" class="server-btn badge-hd" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/1703/output/index.m3u8', 6, 'HD')">Channel 24</button>
 </div>
 
-<!-- DEFER SCRIPTS -->
+<!-- SOCIAL CHIPS (LEFT SIDE) -->
+<div class="social-box" id="socialWidget">
+    <a href="https://www.facebook.com/profile.php?id=61590525141804" target="_blank" class="social-btn btn-fb">Facebook</a>
+    <a href="https://t.me/@High8769" target="_blank" class="social-btn btn-tg">Telegram</a>
+    <button class="close-social" onclick="document.getElementById('socialWidget').style.display='none';">&times;</button>
+</div>
+
+<!-- VIP ACCESS TRIGGER -->
+<div class="vip-trigger-box">
+    <button class="btn-vip-float" onclick="openVipModal()">👑 VIP ACCESS</button>
+</div>
+
+<!-- VIP MODAL SYSTEM -->
+<div id="vip-modal">
+    <div class="vip-box">
+        <button class="close-vip" onclick="closeVipModal()">&times;</button>
+        <h2>👑 VIP PREMIUM</h2>
+        <p>লাইভ খেলা সম্পূর্ণ বিজ্ঞাপনহীন এবং বাফারিং ছাড়া দেখতে VIP এক্সেস নিন।</p>
+        <a href="https://t.me/@High8769" target="_blank" class="btn-donate">🤝 Donate via Telegram</a>
+        
+        <div class="pin-section">
+            <p style="margin:0 0 10px; color:#aaa; font-size:13px; text-transform:uppercase; font-weight:bold;">Already have a PIN?</p>
+            <input type="text" id="vipPinInput" class="pin-input" placeholder="ENTER 8-DIGIT PIN" autocomplete="off" maxlength="10">
+            <button class="btn-submit-pin" onclick="submitVipPin()" id="vipSubmitBtn">UNLOCK VIP NOW</button>
+        </div>
+    </div>
+</div>
+
+<!-- FACEBOOK CONTENT LOCKER SYSTEM -->
+<div id="content-locker">
+    <div class="locker-box">
+        <h2 style="color:#fff; margin-bottom: 15px;">ফেসবুকে ফলোয়ার হতে হবে! ✋</h2>
+        <p>সম্পূর্ণ ফ্রি FHD/4K লাইভস্ট্রীম দেখতে আমাদের অফিশিয়াল পেজটি ফলো করুন, ৫ সেকেন্ডের মধ্যেই প্লেয়ার আনলক হয়ে যাবে!</p>
+        <button id="fbLockerBtn" class="locker-fb-btn" onclick="startUnlockProcess()">ফেসবুকে ফলো করুন এখনই!</button>
+        <div id="lockerCountdown" style="display:none; color:#00ffcc; font-size:18px; margin-top:20px; font-weight:bold;">চেক করা হচ্ছে... <span id="countNumber">৫</span> সেকেন্ড</div>
+    </div>
+</div>
+
+<!-- FOOTER NOTICE -->
+<div class="notice-bottom">
+    ⚽ Welcome to Premium Live Streaming Portal
+</div>
+
+<!-- ENGINES & PLUGINS DEFER LOAD -->
 <script defer src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script defer src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
 
 <script defer>
+    function openVipModal() { document.getElementById('vip-modal').style.display = 'flex'; }
+    function closeVipModal() { document.getElementById('vip-modal').style.display = 'none'; }
+    
+    function submitVipPin() {
+        let pin = document.getElementById('vipPinInput').value.trim();
+        if(pin === "") return alert("Please enter PIN");
+        document.getElementById('vipSubmitBtn').innerText = "VERIFYING...";
+        
+        fetch('', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'action=vip_login&pin=' + encodeURIComponent(pin)
+        }).then(r => r.json()).then(res => {
+            if(res.success) { location.reload(); } 
+            else { alert(res.msg); document.getElementById('vipSubmitBtn').innerText = "UNLOCK VIP NOW"; }
+        }).catch(()=> { alert("Network Error!"); document.getElementById('vipSubmitBtn').innerText = "UNLOCK VIP NOW"; });
+    }
+
     function dismissNotice() {
         var notice = document.getElementById('sticky-header-notice');
         if (notice) notice.style.display = 'none';
         document.body.classList.remove('has-notice');
     }
 
+    const isLockerEnabled = true;
     const isCounterEnabled = true;
     const baseViewsAmount = 734;
+
+    const isTV = /SmartTV|Tizen|WebOS|BRAVIA|Android TV|AppleTV|Roku|TV/i.test(navigator.userAgent);
+    if (isTV) { localStorage.setItem('isPremiumUnlocked', 'true'); }
+
+    function startUnlockProcess(){
+        window.open('https://www.facebook.com/profile.php?id=61590525141804','_blank');
+        document.getElementById('fbLockerBtn').style.display='none';
+        let e=document.getElementById('lockerCountdown');e.style.display='block';
+        let n=5,t=['০','১','২','৩','৪','৫'];
+        document.getElementById('countNumber').innerText=t[n];
+        let o=setInterval((function(){document.hidden||!document.hasFocus()?(n--,n>=0&&(e.innerHTML=`চেক করা হচ্ছে... <span id="countNumber">${t[n]}</span> সেকেন্ড`),n<=0&&(clearInterval(o),localStorage.setItem('isPremiumUnlocked','true'),location.reload())):e.innerHTML=`আগে পেজ ফলো করুন, তারপর আবার ব্যাক আসুন...  <span id="countNumber">${t[n]}</span>`}),1e3)
+    }
 
     var hlsFluid = null;
     var fluidPlayerInstance = null;
@@ -154,37 +360,45 @@
     function initFluidPlayer(url) {
         if(!fluidPlayerInstance && typeof fluidPlayer !== 'undefined') {
             fluidPlayerInstance = fluidPlayer('fluid-player', {
-                layoutControls: { fillToContainer: true, primaryColor: "#ffffff", autoPlay: true, mute: true, controlBar: { autoHide: true } }
+                layoutControls: { 
+                    fillToContainer: true, 
+                    primaryColor: "#00C6FF", 
+                    autoPlay: true, 
+                    mute: true, 
+                    controlBar: { autoHide: true },
+                    playbackRateControl: false,
+                    allowSlowConnectionFeatures: true
+                }
             });
         }
         var videoEl = document.getElementById('fluid-player');
         if (typeof Hls !== 'undefined' && Hls.isSupported()) {
             if(hlsFluid) hlsFluid.destroy();
-            hlsFluid = new Hls({maxBufferLength: 30});
+            hlsFluid = new Hls({maxBufferLength: 30, capLevelToPlayerSize: true});
             hlsFluid.loadSource(url);
             hlsFluid.attachMedia(videoEl);
             hlsFluid.on(Hls.Events.MANIFEST_PARSED, function() {
-                videoEl.play().catch(e=>console.log(e));
+                if (!isLockerEnabled || localStorage.getItem('isPremiumUnlocked')) videoEl.play().catch(e=>console.log(e));
             });
         } else if (videoEl.canPlayType('application/vnd.apple.mpegurl')) {
             videoEl.src = url;
-            videoEl.play().catch(e=>console.log(e));
+            if (!isLockerEnabled || localStorage.getItem('isPremiumUnlocked')) videoEl.play();
         }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
         var serverList = [
-            "https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten2_HD/output/manifest.m3u8",
+            "https://trophystream.com/cors-proxy/https/deviantart.lovetier.bz/TSN4/tracks-v1a1/mono.m3u8?token=VFNONHxub19jaGVja19pcHwxNzgzNzE1ODEy.646b4a3ae5fac259db43ea7c6c0f3a55f4d164b46ac8c677ce0a8d11091e2284",
             "https://trophystream.com/cors-proxy/https/1nyaler.streamhostingcdn.top/stream/23/index.m3u8",
-            "https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten3_HD/output/manifest.m3u8",
-            "https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten2_HD/output/manifest.m3u8",
-            "https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten3_HD/output/manifest.m3u8",
+            "https://trophystream.com/cors-proxy/https/deviantart.lovetier.bz/TSN3/tracks-v1a1/mono.m3u8?token=VFNOM3xub19jaGVja19pcHwxNzgzNzE3MDg1.e5f5a645393430768b21cc37aa47509f741901f08da36d1d4df0a93bd9c12394",
+            "https://edge4.bioscopelive.com/hls/somoytv/index.m3u8",
+            "https://edge4.bioscopelive.com/hls/jamunatv/index.m3u8",
             "https://owrcovcrpy.gpcdn.net/bpk-tv/1717/output/index.m3u8",
-            "https://owrcovcrpy.gpcdn.net/bpk-tv/Gazi_TV_HD/output/manifest.m3u8"
+            "https://owrcovcrpy.gpcdn.net/bpk-tv/1703/output/index.m3u8"
         ];
-        var qualityList = ["HD","4K","HD","HD","HD","HD","HD"];
+        var qualityList = ["4K","4K","4K","HD","HD","HD","HD"];
         var currentServerIndex = 0, isSwitching = !1;
-        var defaultQuality = 'HD';
+        var defaultQuality = '4K';
         var defaultStream = serverList[0];
 
         var initPlayers = function() {
@@ -192,12 +406,25 @@
                 setTimeout(initPlayers, 50);
                 return;
             }
+
             player = videojs('live-player', {
-                html5: { vhs: { overrideNative: !0, allowCrossfileNaming: !0 } },
+                html5: { vhs: { overrideNative: !0, allowCrossfileNaming: !0, fastQualityChange: true } },
                 muted: !0,
-                controlBar: { children: ['playToggle', 'volumePanel', 'subsCapsButton', 'pictureInPictureToggle', 'progressControl', 'fullscreenToggle'] }
+                controlBar: {
+                    children: ['playToggle', 'volumePanel', 'progressControl', 'fullscreenToggle']
+                }
             });
+            
             player.ready(function(){
+                if (!isLockerEnabled || localStorage.getItem('isPremiumUnlocked')) {
+                    var lockerEl = document.getElementById('content-locker');
+                    if(lockerEl) lockerEl.style.display='none';
+                } else {
+                    var lockerEl = document.getElementById('content-locker');
+                    if(lockerEl) lockerEl.style.display='flex';
+                    player.pause();
+                }
+                
                 if (isCounterEnabled) {
                     let n = baseViewsAmount + Math.floor(500 * Math.random());
                     const t = document.getElementById('liveViewerCount');
@@ -208,15 +435,15 @@
                     }
                     o();
                 }
-                
-                // Start default stream on ready
-                player.src({src: defaultStream, type: 'application/x-mpegURL'});
-                player.load();
-                player.play().catch(e => console.log(e));
             });
+
+            if (defaultQuality === '4K') {
+                setTimeout(function(){ initFluidPlayer(defaultStream); }, 100);
+            }
 
             window.changeServer = function(e, n, quality) {
                 if(n === currentServerIndex) return;
+                
                 currentServerIndex = n;
                 isSwitching = !1;
                 document.querySelectorAll('.server-btn').forEach(btn => btn.classList.remove('active'));
@@ -228,24 +455,25 @@
                     document.getElementById('vjs-wrapper').style.display = 'block';
                     var fplayer = document.getElementById('fluid-player');
                     if(fplayer && fplayer.pause) fplayer.pause();
+                    
                     player.error(null);
                     player.pause();
                     player.src({src:e, type:'application/x-mpegURL'});
                     player.load();
-                    player.play().then(function(){isSwitching=!1}).catch(function(err){console.log("Autoplay failed:",err);});
+                    player.play().catch(function(err){console.log("Autoplay failed:",err);});
                 } else {
                     document.getElementById('vjs-wrapper').style.display = 'none';
                     document.getElementById('fluid-wrapper').style.display = 'block';
                     if(player) player.pause();
+                    
                     initFluidPlayer(e);
-                    isSwitching = !1;
                 }
             };
 
             player.on('error',function(){
                 if(isSwitching) return;
                 var e = currentServerIndex + 1;
-                if(e < serverList.length) {
+                if(e < serverList.length && qualityList[e] === "HD") {
                     isSwitching = !0;
                     setTimeout(function(){ changeServer(serverList[e], e, qualityList[e]) }, 3e3);
                 }
@@ -266,6 +494,7 @@
             } catch (err) { console.log('Orientation unlock failed.'); }
         }
     }
+
     document.addEventListener('fullscreenchange', manageScreenOrientation);
     document.addEventListener('webkitfullscreenchange', manageScreenOrientation);
 </script>
