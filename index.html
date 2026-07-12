@@ -49,7 +49,7 @@
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
             color: #fff; padding: 12px 40px 12px 15px; font-size: 14px; font-weight: 600;
-            z-index: 1000000; box-sizing: border-box; display: flex; align-items: center; 
+            z-index: 1000000; box-shadow: border-box; display: flex; align-items: center; 
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255,255,255,0.2); 
             border-bottom: 1px solid rgba(255,255,255,0.1);
             transition: all 0.3s ease; overflow: hidden; letter-spacing: 0.3px;
@@ -244,7 +244,7 @@
     <button id="btn-3" class="server-btn badge-hd" onclick="changeServer('https://edge4.bioscopelive.com/hls/somoytv/index.m3u8', 3, 'HD')">Somoy TV</button>
     <button id="btn-4" class="server-btn badge-hd" onclick="changeServer('https://edge4.bioscopelive.com/hls/jamunatv/index.m3u8', 4, 'HD')">Jamuna TV</button>
     <button id="btn-5" class="server-btn badge-hd" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/1717/output/index.m3u8', 5, 'HD')">T Sports</button>
-    <button id="btn-6" class="server-btn badge-hd" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/1703/output/index.m3u8', 6, 'HD')">BTV</button>
+    <button id="btn-6" class="server-btn badge-hd" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/1703/output/index.m3u8', 6, 'HD')">Channel 24</button>
 </div>
 
 <!-- SOCIAL CHIPS (LEFT SIDE) -->
@@ -386,7 +386,7 @@
             }
 
             window.changeServer = function(e, n, quality) {
-                if(n === currentServerIndex) return;
+                if(n === currentServerIndex && isSwitching === !1) return;
                 
                 currentServerIndex = n;
                 isSwitching = !1;
