@@ -123,9 +123,9 @@
 
 <!-- SERVERS BOX -->
 <div class="server-box">
-    <button id="btn-0" class="server-btn badge-4k active" onclick="changeServer('https://trophystream.com/cors-proxy/https/deviantart.lovetier.bz/TSN4/tracks-v1a1/mono.m3u8?token=VFNONHxub19jaGVja19pcHwxNzgzNzE1ODEy.646b4a3ae5fac259db43ea7c6c0f3a55f4d164b46ac8c677ce0a8d11091e2284', 0, '4K')">Server 1</button>
+    <button id="btn-0" class="server-btn badge-hd active" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten2_HD/output/manifest.m3u8', 0, 'HD')">Server 1</button>
     <button id="btn-1" class="server-btn badge-4k" onclick="changeServer('https://trophystream.com/cors-proxy/https/1nyaler.streamhostingcdn.top/stream/23/index.m3u8', 1, '4K')">Server 2</button>
-    <button id="btn-2" class="server-btn badge-4k" onclick="changeServer('https://trophystream.com/cors-proxy/https/deviantart.lovetier.bz/TSN3/tracks-v1a1/mono.m3u8?token=VFNOM3xub19jaGVja19pcHwxNzgzNzE3MDg1.e5f5a645393430768b21cc37aa47509f741901f08da36d1d4df0a93bd9c12394', 2, '4K')">Server 3</button>
+    <button id="btn-2" class="server-btn badge-hd" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten3_HD/output/manifest.m3u8', 2, 'HD')">Server 3</button>
     <button id="btn-3" class="server-btn badge-hd" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten2_HD/output/manifest.m3u8', 3, 'HD')">Toffee Ten 2</button>
     <button id="btn-4" class="server-btn badge-hd" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten3_HD/output/manifest.m3u8', 4, 'HD')">Toffee Ten 3</button>
     <button id="btn-5" class="server-btn badge-hd" onclick="changeServer('https://owrcovcrpy.gpcdn.net/bpk-tv/1717/output/index.m3u8', 5, 'HD')">T Sports</button>
@@ -174,17 +174,17 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         var serverList = [
-            "https://trophystream.com/cors-proxy/https/deviantart.lovetier.bz/TSN4/tracks-v1a1/mono.m3u8?token=VFNONHxub19jaGVja19pcHwxNzgzNzE1ODEy.646b4a3ae5fac259db43ea7c6c0f3a55f4d164b46ac8c677ce0a8d11091e2284",
+            "https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten2_HD/output/manifest.m3u8",
             "https://trophystream.com/cors-proxy/https/1nyaler.streamhostingcdn.top/stream/23/index.m3u8",
-            "https://trophystream.com/cors-proxy/https/deviantart.lovetier.bz/TSN3/tracks-v1a1/mono.m3u8?token=VFNOM3xub19jaGVja19pcHwxNzgzNzE3MDg1.e5f5a645393430768b21cc37aa47509f741901f08da36d1d4df0a93bd9c12394",
+            "https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten3_HD/output/manifest.m3u8",
             "https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten2_HD/output/manifest.m3u8",
             "https://owrcovcrpy.gpcdn.net/bpk-tv/Toffee_Sony_Ten3_HD/output/manifest.m3u8",
             "https://owrcovcrpy.gpcdn.net/bpk-tv/1717/output/index.m3u8",
             "https://owrcovcrpy.gpcdn.net/bpk-tv/Gazi_TV_HD/output/manifest.m3u8"
         ];
-        var qualityList = ["4K","4K","4K","HD","HD","HD","HD"];
+        var qualityList = ["HD","4K","HD","HD","HD","HD","HD"];
         var currentServerIndex = 0, isSwitching = !1;
-        var defaultQuality = '4K';
+        var defaultQuality = 'HD';
         var defaultStream = serverList[0];
 
         var initPlayers = function() {
@@ -208,14 +208,14 @@
                     }
                     o();
                 }
+                
+                // Start default stream on ready
+                player.src({src: defaultStream, type: 'application/x-mpegURL'});
+                player.load();
+                player.play().catch(e => console.log(e));
             });
 
-            if (defaultQuality === '4K') {
-                setTimeout(function(){ initFluidPlayer(defaultStream); }, 100);
-            }
-
             window.changeServer = function(e, n, quality) {
-                if(0 === n && 0 !== currentServerIndex) return void window.location.reload();
                 if(n === currentServerIndex) return;
                 currentServerIndex = n;
                 isSwitching = !1;
